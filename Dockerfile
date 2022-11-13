@@ -1,7 +1,11 @@
 # set base image (host OS)
 FROM python:3.8
 
+WORKDIR /usr/src
+COPY ./src ./src
+
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 
 RUN apt-get -y update
 RUN apt-get install -y curl nano wget nginx git
@@ -21,8 +25,7 @@ RUN apt-get install -y mongodb-org
 RUN apt-get install -y yarn
 
 # Install PIP
-RUN easy_install pip
-
+# RUN easy_install pip
 
 ENV ENV_TYPE staging
 ENV MONGO_HOST mongo
@@ -30,9 +33,10 @@ ENV MONGO_PORT 27017
 ##########
 
 ENV PYTHONPATH=$PYTHONPATH:/src/
+ENV ADBREW_CODEBASE_PATH="/Users/nitesh/desktop/test/adb_test/test/src"
 
 # copy the dependencies file to the working directory
-COPY src/requirements.txt .
+COPY src/requirements.txt requirements.txt
 
 # install dependencies
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
